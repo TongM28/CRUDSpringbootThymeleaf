@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title>Danh sách Tin tuyển dụng</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <h1 class="mb-4">Danh sách Tin tuyển dụng</h1>
+
+    <a th:href="@{/jobs/add}" class="btn btn-primary mb-3">Đăng tin mới</a>
+
+    <!-- Kiểm tra nếu danh sách rỗng -->
+    <div th:if="${#lists.isEmpty(jobs)}" class="alert alert-info" role="alert">
+        Chưa có tin tuyển dụng nào được đăng.
+    </div>
+
+    <!-- Chỉ hiển thị bảng nếu danh sách không rỗng -->
+    <div th:unless="${#lists.isEmpty(jobs)}" class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col" style="width: 5%;">STT</th>
+                <th scope="col" style="width: 25%;">Tiêu đề</th>
+                <th scope="col" style="width: 20%;">Công ty</th>
+                <th scope="col" style="width: 15%;">Địa điểm</th>
+                <th scope="col" style="width: 15%;">Loại công việc</th>
+                <th scope="col" style="width: 10%;">Ngày đăng</th>
+                <th scope="col" style="width: 10%;">Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Lặp qua danh sách jobs -->
+            <tr th:each="job, iterStat : ${jobs}">
+                <td th:text="${iterStat.count}">1</td>
+                <!-- Hiển thị tên công ty qua quan hệ job.company.name -->
+                <td th:text="${job.title}">Java Developer</td>
+                <td th:text="${job.company.name}">FPT Software</td>
+                <td th:text="${job.location}">Hà Nội</td>
+                <!-- Hiển thị tên thân thiện của Enum -->
+                <td th:text="${job.jobType.getDisplayName()}">Toàn thời gian</td>
+                <!-- Định dạng ngày tháng -->
+                <td th:text="${#temporals.format(job.postedDate, 'dd/MM/yyyy')}">11/11/2025</td>
+                <td>
+                    <a th:href="@{/jobs/edit/{id}(id=${job.id})}" class="btn btn-sm btn-warning">Sửa</a>
+                    <a th:href="@{/jobs/delete/{id}(id=${job.id})}"
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Bạn có chắc chắn muốn xóa tin này?');">Xóa</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

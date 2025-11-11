@@ -1,0 +1,20 @@
+/* Tùy chỉnh CSS đơn giản
+*/
+
+/* Đẩy nội dung xuống để không bị footer che mất */
+body {
+    padding-bottom: 70px; /* Chiều cao của footer + một chút đệm */
+}
+
+/* Tăng kích thước font cho bảng để dễ đọc hơn */
+.table {
+    font-size: 0.95rem;
+}
+
+/* Sửa lỗi hiển thị của .is-invalid cho <select> */
+.form-select.is-invalid {
+    border-color: #dc3545;
+}
+.form-select.is-invalid:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}

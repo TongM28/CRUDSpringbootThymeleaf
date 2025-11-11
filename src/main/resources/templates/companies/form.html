@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title th:text="${pageTitle}">Thêm/Sửa Công ty</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <!-- Dùng pageTitle được truyền từ Controller -->
+    <h1 class_="mb-4" th:text="${pageTitle}">Thêm/Sửa Công ty</h1>
+
+    <div class="col-md-8">
+        <!-- Form liên kết với th:object="${company}" -->
+        <form th:action="@{/companies/save}" th:object="${company}" method="post">
+
+            <!-- ID ẩn (quan trọng cho việc cập nhật) -->
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Trường Name -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Tên Công ty</label>
+                <input type="text" class="form-control" id="name" th:field="*{name}"
+                       th:errorclass="is-invalid" />
+                <!-- Hiển thị lỗi validation -->
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback"></div>
+            </div>
+
+            <!-- Trường Address -->
+            <div class="mb-3">
+                <label for="address" class="form-label">Địa chỉ</label>
+                <input type="text" class="form-control" id="address" th:field="*{address}"
+                       th:errorclass="is-invalid" />
+                <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="invalid-feedback"></div>
+            </div>
+
+            <!-- Trường Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" th:field="*{email}"
+                       th:errorclass="is-invalid" />
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></div>
+            </div>
+
+            <!-- Trường Website -->
+            <div class="mb-3">
+                <label for="website" class="form-label">Website (Không bắt buộc)</label>
+                <input type="text" class="form-control" id="website" th:field="*{website}"
+                       th:errorclass="is-invalid" placeholder="https://example.com" />
+                <div th:if="${#fields.hasErrors('website')}" th:errors="*{website}" class="invalid-feedback"></div>
+            </div>
+
+            <button type="submit" class="btn btn-success">Lưu Công ty</button>
+            <a th:href="@{/companies}" class="btn btn-secondary">Hủy</a>
+        </form>
+    </div>
+</section>
+</body>
+</html>

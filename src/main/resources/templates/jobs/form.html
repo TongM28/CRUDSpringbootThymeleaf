@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title th:text="${pageTitle}">Thêm/Sửa Tin tuyển dụng</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <h1 class="mb-4" th:text="${pageTitle}">Thêm/Sửa Tin tuyển dụng</h1>
+
+    <div class="col-md-8">
+        <form th:action="@{/jobs/save}" th:object="${job}" method="post">
+
+            <input type="hidden" th:field="*{id}" />
+            <!-- Trường postedDate cũng nên ẩn đi vì nó được tự động gán -->
+            <input type="hidden" th:field="*{postedDate}" />
+
+            <!-- Trường Title -->
+            <div class="mb-3">
+                <label for="title" class="form-label">Tiêu đề</label>
+                <input type="text" class="form-control" id="title" th:field="*{title}"
+                       th:errorclass="is-invalid" />
+                <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="invalid-feedback"></div>
+            </div>
+
+            <!-- Trường Company (Dropdown) -->
+            <div class="mb-3">
+                <label for="company" class="form-label">Công ty</label>
+                <select class="form-select" id="company" th:field="*{company}" th:errorclass="is-invalid">
+                    <option value="">-- Chọn công ty --</option>
+                    <!-- Lặp qua danh sách ${companies} từ Controller -->
+                    <option th:each="comp : ${companies}"
+                            th:value="${comp.id}"
+                            th:text="${comp.name}">FPT Software</option>
+                </select>
+                <div th:if="${#fields.hasErrors('company')}" th:errors="*{company}" class="invalid-feedback"></div>
+            </div>
+
+            <!-- Trường JobType (Dropdown) -->
+            <div class="mb-3">
+                <label for="jobType" class="form-label">Loại công việc</label>
+                <select class="form-select" id="jobType" th:field="*{jobType}" th:errorclass="is-invalid">
+                    <option value="">-- Chọn loại công việc --</option>
+                    <!-- Lặp qua danh sách Enum ${jobTypes} từ Controller -->
+                    <option th:each="type : ${jobTypes}"
+                            th:value="${type}"
+                            th:text="${type.getDisplayName()}">Toàn thời gian</option>
+                </select>
+                <div th:if="${#fields.hasErrors('jobType')}" th:errors="*{jobType}" class="invalid-feedback"></div>
+            </div>
+
+            <!-- Trường Location -->
+            <div class="mb-3">
+                <label for="location" class="form-label">Địa điểm</label>
+                <input type="text" class="form-control" id="location" th:field="*{location}"
+                       th:errorclass="is-invalid" />
+                <div th:if="${#fields.hasErrors('location')}" th:errors="*{location}" class="invalid-feedback"></div>
+            </div>
+
+            <!-- Trường Salary -->
+            <div class="mb-3">
+                <label for="salary" class="form-label">Mức lương (Không bắt buộc)</label>
+                <input type="text" class="form-control" id="salary" th:field="*{salary}"
+                       placeholder="Ví dụ: Thỏa thuận, hoặc 15-20 triệu" />
+            </div>
+
+            <!-- Trường Description (Textarea) -->
+            <div class="mb-3">
+                <label for="description" class="form-label">Mô tả công việc</label>
+                <textarea class="form-control" id="description" th:field="*{description}" rows="6"
+                          th:errorclass="is-invalid"></textarea>
+                <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="invalid-feedback"></div>
+            </div>
+
+            <button type="submit" class="btn btn-success">Lưu Tin</button>
+            <a th:href="@{/jobs}" class="btn btn-secondary">Hủy</a>
+        </form>
+    </div>
+</section>
+</body>
+</html>
